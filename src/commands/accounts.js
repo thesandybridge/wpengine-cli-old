@@ -25,7 +25,7 @@ export class Accounts extends Commands {
     listAccounts = async () => {
         const data = await fetch(`https://api.wpengineapi.com/v1/accounts`, {
             method: 'GET',
-            headers: { 'Authorization': this.auth.authorization },
+            headers: { 'Authorization': this.auth.authorization() },
         })
         const json = await data.json();
         const accounts = json.results.map(data => {

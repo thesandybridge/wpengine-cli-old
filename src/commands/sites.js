@@ -31,7 +31,7 @@ export class Sites extends Commands {
         if (limit < 1) {
             const data = await fetch(`https://api.wpengineapi.com/v1/sites`, {
                 method: 'GET',
-                headers: { 'Authorization': this.auth.authorization },
+                headers: { 'Authorization': this.auth.authorization() },
             })
             const json = await data.json();
         
@@ -45,7 +45,7 @@ export class Sites extends Commands {
         } else {
             const data = await fetch(`https://api.wpengineapi.com/v1/sites?limit=${limit}`, {
                 method: 'GET',
-                headers: { 'Authorization': this.auth.authorization },
+                headers: { 'Authorization': this.auth.authorization() },
             })
             const json = await data.json();
             

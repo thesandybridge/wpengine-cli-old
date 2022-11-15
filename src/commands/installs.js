@@ -24,7 +24,7 @@ export class Installs extends Commands {
     listInstalls = async () => {
         const data = await fetch(`https://api.wpengineapi.com/v1/installs`, {
             method: 'GET',
-            headers: { 'Authorization': this.auth.authorization },
+            headers: { 'Authorization': this.auth.authorization() },
         })
         const json = await data.json();
     
