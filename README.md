@@ -15,8 +15,6 @@ This tool is still in development, feel free to fork and extend for your own nee
 
 ## Installation
 
-For debugging you can rename `.env.sample` to `.env` and update the variables. The tool will automatically overwrite the file when you run the `auth` command.
-
 ### Manual installation
 
 1. Clone this repository
