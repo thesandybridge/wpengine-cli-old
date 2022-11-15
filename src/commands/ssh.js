@@ -26,7 +26,7 @@ export class SSH extends Commands {
     getKeys = async () => {
         const data = await fetch(`https://api.wpengineapi.com/v1/ssh_keys`, {
             method: 'GET',
-            headers: { 'Authorization': this.auth.authorization },
+            headers: { 'Authorization': this.auth.authorization() },
         })
         const json = await data.json();
         const keys = json.results.map(data => {
@@ -49,7 +49,7 @@ export class SSH extends Commands {
         if (limit > 0) {
             const data = await fetch(`https://api.wpengineapi.com/v1/ssh_keys?limit=${limit}`, {
                 method: 'GET',
-                headers: { 'Authorization': this.auth.authorization },
+                headers: { 'Authorization': this.auth.authorization() },
             })
             const json = await data.json();
             const keys = json.results.map(data => {
@@ -63,7 +63,7 @@ export class SSH extends Commands {
         } else {
             const data = await fetch(`https://api.wpengineapi.com/v1/ssh_keys`, {
                 method: 'GET',
-                headers: { 'Authorization': this.auth.authorization },
+                headers: { 'Authorization': this.auth.authorization() },
             })
             const json = await data.json();
             const keys = json.results.map(data => {
@@ -107,7 +107,7 @@ export class SSH extends Commands {
         const data = await fetch(`https://api.wpengineapi.com/v1/ssh_keys/${key}`, {
             method: 'DELETE',
             headers: {
-                'Authorization': this.auth.authorization,
+                'Authorization': this.auth.authorization(),
                 'accept': 'application/json'
             }
         })

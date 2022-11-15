@@ -6,12 +6,16 @@
  *
  */
 
-import { readFile, writeFile } from 'fs';
+import { readFile, writeFile, existsSync } from 'fs';
 import { validate as uuidValidate } from 'uuid';
 import dotenv from 'dotenv';
 dotenv.config();
 import inquirer from 'inquirer';
 import chalk from 'chalk';
+import os from 'os';
+import { LineReader } from 'node-line-reader';
+const homeDir = os.homedir();
+
 
 /**
  * Handles the logic for the auth CLI
@@ -20,22 +24,60 @@ import chalk from 'chalk';
  */
 export default class Auth {
 
-    envPath = '.env';
-    WPENGINE_PASSWORD = process.env.WPENGINE_PASSWORD;
-    WPENGINE_USER_ID = process.env.WPENGINE_USER_ID;
+    envPath = `${homeDir}/.config`;
+    wpeconfig = '.wpeconfig';
+    WPENGINE_PASSWORD;
+    WPENGINE_USER_ID;
+    SSH_KEY;
     
-    authorization = "Basic " + Buffer.from(this.WPENGINE_USER_ID + ":" + this.WPENGINE_PASSWORD).toString('base64');
+    constructor() { }
+    
+    async readConfig() {
 
-    constructor() { }    
+        if (!existsSync(this.envPath)) return
+
+        readFile(`${this.envPath}/${this.wpeconfig}`, 'utf8', (err, data) => {
+            if (err) throw err
+            const [key, value] = data.split('=');
+            console.log(`${key} = ${value}`)        
+        })
+    }
+
+    async parseConfig() {
+        const read = new LineReader(`${this.envPath}/${this.wpeconfig}`);
+        read.nextLine((err, line) => {
+            if (err) throw err
+            const [key, value] = line.split(':');
+            this.WPENGINE_USER_ID = value;
+        })
+        read.nextLine((err, line) => {
+            if (err) throw err
+            const [key, value] = line.split(':');
+            this.WPENGINE_PASSWORD = value;
+        })
+        read.nextLine((err, line) => {
+            if (err) throw err
+            const [key, value] = line.split(':');
+            this.SSH_KEY = value;
+        })
+    }
     
     /**
      * Returns a boolean response to determine if the user has authenticated before or not.
      * @returns BOOLEAN
      * @since 1.0.0
      */
-    authenticated() {
-        const valid = uuidValidate(this.WPENGINE_USER_ID)
-        return valid;
+    async authenticated() {
+        await this.parseConfig().then(() => {
+            const valid = uuidValidate(this.WPENGINE_USER_ID)
+            return valid;
+        })
+    }
+
+    authorization() {
+        this.parseConfig()
+        const authorization = "Basic " + Buffer.from(this.WPENGINE_USER_ID + ":" + this.WPENGINE_PASSWORD).toString('base64');
+        return authorization;
     }
     
     /**
@@ -45,22 +87,9 @@ export default class Auth {
      * @since 1.0.0
      */    
      async setEnv(creds) {
-        readFile('.env', 'utf8', function (err) {
-            if (err) {
-                writeFile('.env', creds, (err) => {
-                    if (err) {
-                        console.log(err);
-                    }
-                });
-            } else {
-                writeFile('.env', creds, (err) => {
-                    if (err) {
-                        return console.log(err);
-                    }
-                })
-            }
-    
-    
+        this.parseConfig()
+        writeFile(`${this.envPath}/${this.wpeconfig}`, creds, (err) => {
+            if (err) throw err
         });
     
     }
@@ -101,7 +130,7 @@ export default class Auth {
             }
         ])
         .then(async (answer) => {
-            await this.setEnv(`WPENGINE_USER_ID=${answer.account_id}\nWPENGINE_PASSWORD=${answer.password}\nSSH_PATH=${answer.ssh}`);
+            await this.setEnv(`WPENGINE_USER_ID:${answer.account_id}\nWPENGINE_PASSWORD:${answer.password}\nSSH_PATH:${answer.ssh}`);
             console.log('Credentials set!')
         })
         .catch((error) => {
