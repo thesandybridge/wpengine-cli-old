@@ -32,6 +32,10 @@ export default class Auth {
     
     constructor() { }
     
+    /**
+     * Checks for the users config.
+     * @since 1.2.0
+     */
     async readConfig() {
 
         if (!existsSync(this.envPath)) return
@@ -42,7 +46,11 @@ export default class Auth {
             console.log(`${key} = ${value}`)        
         })
     }
-
+    
+    /**
+     * Parses the conents of the config file and stores them
+     * @since 1.2.0
+     */
     async parseConfig() {
         const read = new LineReader(`${this.envPath}/${this.wpeconfig}`);
         read.nextLine((err, line) => {
