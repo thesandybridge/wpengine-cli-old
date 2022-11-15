@@ -69,7 +69,7 @@ export class Sites extends Commands {
     getSiteById = async (id) => {
         const data = await fetch(`https://api.wpengineapi.com/v1/sites/${id}`, {
             method: 'GET',
-            headers: { 'Authorization': this.auth.authorization },
+            headers: { 'Authorization': this.auth.authorization() },
         })
         const json = await data.json();
         return json;
@@ -85,7 +85,7 @@ export class Sites extends Commands {
             method: 'POST',
             body: JSON.stringify(body),
             headers: { 
-                'Authorization': this.auth.authorization,
+                'Authorization': this.auth.authorization(),
                 'Content-Type': 'application/json',
                 'accept': 'application/json'
             },
