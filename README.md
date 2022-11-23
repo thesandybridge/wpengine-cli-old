@@ -45,6 +45,7 @@ Description: The ```sites``` command provides an interface for various WP Engine
 4. [ ] update sites -- **coming soon**
 5. [ ] delete sites -- **coming soon**
 6. [ ] list wp users -- **coming soon**
+7. [ ] convert to rust app
 
 ## Installs
 
