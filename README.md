@@ -1,17 +1,19 @@
 # wpengine CLI | Early Access
 
+**DEPRECATED** This project is no longer maintained. Please use [wpengine_v2](https://github.com/method-devs/wpengine_cli_v2). We have rebuilt the CLI from the ground up to be more robust and easier to use with Rust.
+
 This tool is still in development, feel free to fork and extend for your own needs. I plan on adding complete functionality to interface with the wpengine API. Once that is complete I will extend the functionality.
 
-- [Installation](#installation)
-- [Manual installation](#manual-installation)
-- [Authentication](#authentication)
-- [Sites](#sites)
-- [Installs](#installs)
-- [Accounts](#accounts)
-- [Users](#users)
-- [Roadmap](#roadmap)
-- [Notes](#notes)
-
+- [wpengine CLI | Early Access](#wpengine-cli--early-access)
+  - [Installation](#installation)
+    - [Manual installation](#manual-installation)
+  - [Authentication](#authentication)
+  - [Sites](#sites)
+  - [Installs](#installs)
+  - [Accounts](#accounts)
+  - [Users](#users)
+  - [Roadmap](#roadmap)
+  - [Notes](#notes)
 
 ## Installation
 
